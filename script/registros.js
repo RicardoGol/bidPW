@@ -1,8 +1,7 @@
 const estadoBusca = document.querySelector('#estado-busca');
-const dataBusca= document.querySelector('#data-busca');
 const clubeBusca = document.querySelector('#clube-busca');
 const botaoBusca = document.querySelector('#botao-busca');
-/* buscaEstados */
+/* Vou precisar pra pegar os ids */
 
 function atualizarClubes() {
     const estadoSelecionado = estadoBusca.value;
