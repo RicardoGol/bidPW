@@ -1,0 +1,92 @@
+/* =============================================
+   login.css — estilos da página de login
+============================================= */
+
+/* ── BOTÃO VOLTAR ── */
+body > a {
+    display: inline-block;
+    margin: 1.5rem 2rem;
+    padding: 16px 40px;
+    background-color: var(--verde-cbf);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+}
+
+body > a:hover {
+    background-color: #005229;
+}
+
+/* ── CARD DE LOGIN ── */
+#container-login {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 360px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-top: 3px solid var(--verde-cbf);
+    border-radius: 2px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+#container-login::before {
+    content: 'ACESSO RESTRITO';
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--verde-cbf);
+    margin-bottom: 0.5rem;
+}
+
+#container-login input {
+    padding: 10px 14px;
+    background-color: #F5F5F5;
+    border: 1px solid var(--borda);
+    border-radius: 2px;
+    color: var(--texto);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#container-login input:focus {
+    border-color: var(--verde-cbf);
+    background-color: #fff;
+}
+
+/* ── BOTÃO ENTRAR ── */
+#botao-confirmar-login {
+    padding: 11px;
+    background-color: var(--verde-cbf);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 0.25rem;
+    transition: background-color 0.2s;
+}
+
+#botao-confirmar-login:hover {
+    background-color: #005229;
+}
+
+#botao-confirmar-login:active {
+    background-color: #003d1f;
+}

@@ -139,61 +139,61 @@ export const ClubesPorEstado = {
     'Pernambuco':  [
     {id:104, name:'Sport', division: 'B'},
     {id:105, name:'Náutico', division: 'B'},
-    {id:108, name:'Santa Cruz', division:'C'},
+    {id:106, name:'Santa Cruz', division:'C'},
     {id:107, name:'Retrô', division: 'D'},
-    {id:106, name:'Central de Caruaru', division: 'D'}
+    {id:108, name:'Central de Caruaru', division: 'D'}
 ],
     'Piaui': [
-    {id:107, name:'Altos', division: 'D'},
-    {id:108, name:'Fluminense-PI', division: 'D'},
-    {id:109, name:'Parnahyba', division: 'D'},
-    {id:110, name:'Piauí', division: 'D'}
+    {id:109, name:'Altos', division: 'D'},
+    {id:110, name:'Fluminense-PI', division: 'D'},
+    {id:111, name:'Parnahyba', division: 'D'},
+    {id:112, name:'Piauí', division: 'D'}
 ],
     'Rio Grande do Norte': [
-    {id:111, name:'ABC', division: 'D'},
-    {id:112, name:'América-RN', division: 'D'},
-    {id:113, name:'Laguna', division: 'D'}
+    {id:113, name:'ABC', division: 'D'},
+    {id:114, name:'América-RN', division: 'D'},
+    {id:115, name:'Laguna', division: 'D'}
 ],
     'Sergipe': [
-    {id:114, name:'Confiança', division: 'C'},
-    {id:115, name:'Sergipe', division: 'D'}
+    {id:116, name:'Confiança', division: 'C'},
+    {id:117, name:'Sergipe', division: 'D'}
 ],
 //Norte
     'Acre': [
-    {id:116, name:'Humaitá', division: 'D'},
-    {id:117, name:'Independência', division: 'D'}
+    {id:118, name:'Humaitá', division: 'D'},
+    {id:119, name:'Independência', division: 'D'}
 ],
     'Amazonas': [
-    {id:118, name:'Amazonas', division: 'C'},
-    {id:119, name:'Manauara', division: 'D'},
-    {id:120, name:'Manaus', division: 'D'},
-    {id:121, name:'Nacional-AM', division: 'D'}
+    {id:120, name:'Amazonas', division: 'C'},
+    {id:121, name:'Manauara', division: 'D'},
+    {id:122, name:'Manaus', division: 'D'},
+    {id:123, name:'Nacional-AM', division: 'D'}
 
 ],
     'Amapa': [
-    {id:122, name:'Trem', division: 'D'},
-    {id:123, name:'Oratório', division: 'D'}
+    {id:124, name:'Trem', division: 'D'},
+    {id:125, name:'Oratório', division: 'D'}
 ],
     'Para': [
-    {id:124, name:'Remo', division: 'A'},
-    {id:125, name:'Paysandu', division: 'C'},
-    {id:126, name:'Águia de Marabá', division: 'D'},
-    {id:127, name:'Tuna Luso', division: 'D'}
+    {id:126, name:'Remo', division: 'A'},
+    {id:127, name:'Paysandu', division: 'C'},
+    {id:128, name:'Águia de Marabá', division: 'D'},
+    {id:129, name:'Tuna Luso', division: 'D'}
 
 ],
     'Roraima': [
-    {id:128, name:'GAS', division: 'D'},
-    {id:129, name:'Monte Roraima', division: 'D'},
-    {id:130, name:'São Raimundo', division: 'D'},
+    {id:130, name:'GAS', division: 'D'},
+    {id:131, name:'Monte Roraima', division: 'D'},
+    {id:132, name:'São Raimundo', division: 'D'},
 ],
     'Rondonia': [
-    {id:131, name:'Porto Velho', division: 'D'},
-    {id:132, name:'Guaporé', division: 'D'}
+    {id:133, name:'Porto Velho', division: 'D'},
+    {id:134, name:'Guaporé', division: 'D'}
 
 ],
     'Tocantins': [
-    {id:133, name:'Araguaína', division: 'D'},
-    {id:134, name:'Tocantinópolis', division: 'D'}
+    {id:135, name:'Araguaína', division: 'D'},
+    {id:136, name:'Tocantinópolis', division: 'D'}
 
 ]
 }

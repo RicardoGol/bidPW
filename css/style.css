@@ -1,0 +1,90 @@
+/* =============================================
+   BID - Boletim Informativo Diário | CBF
+   style.css — estilos GLOBAIS (todas as páginas)
+   Paleta:
+   --verde-cbf:    #006633
+   --amarelo-cbf:  #F5C900
+   --fundo:        #E8E8E8
+   --superficie:   #FFFFFF
+   --borda:        #C8C8C8
+   --texto:        #1A1A1A
+   --texto-suave:  #666666
+============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --verde-cbf: #006633;
+    --amarelo-cbf: #F5C900;
+    --fundo: #d8d8d8;
+    --superficie: white;
+    --borda: #C8C8C8;
+    --texto: #1A1A1A;
+    --texto-suave: #666666;
+}
+
+body {
+    background-color: var(--fundo);
+    background-image: url('../imagens/Fundo_CBF.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 900px auto;
+    background-attachment: fixed;
+    font-family: 'Barlow', sans-serif;
+    color: var(--texto);
+    min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 64px;
+    background-color: var(--verde-cbf);
+    border-bottom: 3px solid var(--amarelo-cbf);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+header a:first-child {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    color: var(--amarelo-cbf);
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+header a:last-child {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: var(--amarelo-cbf);
+    color: #1A1A1A;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+}
+
+header a:last-child:hover {
+    background-color: #d4ad00;
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 520px) {
+    header {
+        padding: 0 1rem;
+    }
+}

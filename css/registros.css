@@ -1,0 +1,211 @@
+/* =============================================
+   registros.css — estilos da página de registros
+============================================= */
+
+/* ── BOTÃO VOLTAR ── */
+.botao-voltar {
+    display: inline-block;
+    margin: 1.5rem 2rem;
+    padding: 16px 40px;
+    background-color: var(--verde-cbf);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+}
+
+.botao-voltar:hover {
+    background-color: #005229;
+}
+
+/* ── ÁREA DE REGISTROS ── */
+#registrar-time {
+    max-width: 720px;
+    margin: 0 auto 4rem;
+    padding: 0 1.5rem;
+}
+
+#registrar-time::before {
+    content: 'REGISTROS';
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.2em;
+    color: var(--verde-cbf);
+    margin-bottom: 1rem;
+}
+
+#formulario-busca {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-top: 3px solid var(--verde-cbf);
+    padding: 1.5rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+#formulario-busca select {
+    flex: 1;
+    min-width: 160px;
+    padding: 10px 14px;
+    background-color: #F5F5F5;
+    border: 1px solid var(--borda);
+    border-radius: 2px;
+    color: var(--texto);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    cursor: pointer;
+}
+
+#formulario-busca select:focus {
+    border-color: var(--verde-cbf);
+    background-color: #fff;
+}
+
+#formulario-busca select option,
+#formulario-busca select optgroup {
+    background-color: #ffffff;
+    color: var(--texto);
+}
+
+/* ── BOTÕES DE AÇÃO ── */
+.botoes-acao {
+    display: flex;
+    gap: 0.75rem;
+}
+
+#botao-busca {
+    flex: 1;
+    padding: 12px;
+    background-color: var(--verde-cbf);
+    color: #ffffff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#botao-busca:hover {
+    background-color: #005229;
+}
+
+#botao-busca:active {
+    background-color: #003d1f;
+}
+
+#botao-abrir-modal {
+    padding: 12px 24px;
+    background-color: var(--amarelo-cbf);
+    color: #1A1A1A;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#botao-abrir-modal:hover {
+    background-color: #d4ad00;
+}
+
+/* ── MODAL ── */
+#overlay-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+#overlay-modal.ativo {
+    display: flex;
+}
+
+#modal-registro {
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-top: 3px solid var(--verde-cbf);
+    border-radius: 2px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+#modal-registro::before {
+    content: 'REGISTRAR JOGADOR';
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--verde-cbf);
+    margin-bottom: 1.5rem;
+}
+
+#botao-fechar-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--texto-suave);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+#botao-fechar-modal:hover {
+    color: var(--texto);
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 520px) {
+    #registrar-time {
+        margin-top: 0;
+    }
+
+    #formulario-busca {
+        flex-direction: column;
+    }
+
+    #formulario-busca select {
+        width: 100%;
+    }
+
+    .botoes-acao {
+        flex-direction: column;
+    }
+
+    #modal-registro {
+        margin: 1rem;
+        max-width: 100%;
+    }
+}

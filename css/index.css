@@ -1,0 +1,103 @@
+/* =============================================
+   index.css — estilos da página de busca (Index)
+============================================= */
+
+/* ── ÁREA DE BUSCA ── */
+#container-busca {
+    max-width: 720px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
+}
+
+#container-busca::before {
+    content: 'CONSULTA DE REGISTROS';
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--verde-cbf);
+    margin-bottom: 1rem;
+}
+
+#formulario-busca {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-top: 3px solid var(--verde-cbf);
+    padding: 1.5rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+#formulario-busca input,
+#formulario-busca select {
+    flex: 1;
+    min-width: 160px;
+    padding: 10px 14px;
+    background-color: #F5F5F5;
+    border: 1px solid var(--borda);
+    border-radius: 2px;
+    color: var(--texto);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    cursor: pointer;
+}
+
+#formulario-busca input:focus,
+#formulario-busca select:focus {
+    border-color: var(--verde-cbf);
+    background-color: #fff;
+}
+
+#formulario-busca select option,
+#formulario-busca select optgroup {
+    background-color: #ffffff;
+    color: var(--texto);
+}
+
+/* ── BOTÃO DE BUSCA ── */
+#botao-busca {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--verde-cbf);
+    color: #ffffff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#botao-busca:hover {
+    background-color: #005229;
+}
+
+#botao-busca:active {
+    background-color: #003d1f;
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 520px) {
+    #container-busca {
+        margin: 2rem auto;
+    }
+
+    #formulario-busca {
+        flex-direction: column;
+    }
+
+    #formulario-busca input,
+    #formulario-busca select {
+        width: 100%;
+    }
+}

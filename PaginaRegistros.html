@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
     <script type="module" src="script/registros.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/registros.css">
 </head>
 <body>
-    <div id="registrar-time">
+    <!-- <div id="registrar-time">
         <form id="formulario-busca">
             <select id="estado-busca">
                 <option value="">Estados</option>
@@ -64,22 +65,78 @@
         <button id="botao-busca">teste-busca</button>
     </div>
 
-<!--     <div id="container-registro">          Provavelmente vou trocar pra uma aba tipo alert, vou esperar a proxima aula do pablo pra ver como fica mas pode usar como base
-        
-        <input type="text" id="registar-nome">
-
-        <img src="data:[tipo-do-arquivo];base64,[codigo-base64]">
-
-        <input type="text" id="registar-contrato">
-        <input type="date" id="registar-publicacao">
-        <input type="date" id="registar-inicio">
-        <input type="number" id="registar-inscricao">
-        <input type="text" id="registar-apelido">
-        <input type="date" id="registar-nascimento">  
-        
-        <img src="data:[tipo-do-arquivo];base64,[codigo-base64]">
-        
-        <button id="botao-confirmar-registro">Confirmar</button>
     </div> -->
+    <body>
+    <a href="Index.html" class="botao-voltar">← Voltar</a>
+
+    <div id="registrar-time">
+        <form id="formulario-busca">
+            <input type="date" id="data-busca" placeholder="Data">
+            <select id="estado-busca">
+                <option value="">Estados</option>
+
+                <optgroup label="Sul">
+                <option value="Parana">PR</option>
+                <option value="Rio Grande do Sul">RS</option>
+                <option value="Santa Catarina">SC</option>
+                </optgroup>
+
+                <optgroup label="Sudeste">
+                <option value="Espirito Santo">ES</option>
+                <option value="Minas Gerais">MG</option>
+                <option value="Rio de Janeiro">RJ</option>
+                <option value="Sao Paulo">SP</option>
+                </optgroup>
+
+                <optgroup label="Centro-Oeste">
+                <option value="Distrito Federal">DF</option>
+                <option value="Goias">GO</option>
+                <option value="Mato grosso do Sul">MS</option>
+                <option value="Mato Grosso">MT</option>
+                </optgroup>
+
+                <optgroup label="Nordeste">
+                <option value="Alagoas">AL</option>
+                <option value="Bahia">BA</option>
+                <option value="Ceara">CE</option>
+                <option value="Maranhao">MA</option>
+                <option value="Paraiba">PB</option>
+                <option value="Pernambuco">PE</option>
+                <option value="Piaui">PI</option>
+                <option value="Rio Grande do Norte">RN</option>
+                <option value="Sergipe">SE</option>
+                </optgroup>
+
+                <optgroup label="Norte">
+                <option value="Acre">AC</option>
+                <option value="Amazonas">AM</option>
+                <option value="Amapa">AP</option>
+                <option value="Para">PA</option>
+                <option value="Rondonia">RO</option>
+                <option value="Roraima">RR</option>
+                <option value="Tocantins">TO</option>
+                </optgroup>
+
+            </select>
+            <select id="clube-busca">
+                <option value="">Todos os clubes</option>
+                <option></option>
+            </select>
+        </form>
+        <div class="botoes-acao">
+            <button id="botao-busca">Buscar</button>
+            <button id="botao-abrir-modal">+ Registrar Jogador</button>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div id="overlay-modal">
+        <div id="modal-registro">
+            <button id="botao-fechar-modal">✕</button>
+            <!-- campos do formulário virão aqui -->
+        </div>
+    </div>
+</body>
 </body>
 </html>
