@@ -1,4 +1,4 @@
-const ClubesPorEstado = {
+export const ClubesPorEstado = {
     //Sul
     'Parana': [
     {id:1, name:'Athletico Paranaense', division: 'A' },

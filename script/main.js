@@ -1,3 +1,5 @@
+import { ClubesPorEstado } from "./dados.js";
+
 const estadoBusca = document.querySelector('#estado-busca');
 const dataBusca= document.querySelector('#data-busca');
 const clubeBusca = document.querySelector('#clube-busca');

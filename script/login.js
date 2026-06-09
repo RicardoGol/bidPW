@@ -1,3 +1,5 @@
+import { showToast } from "./utils.js";
+
 function validarUsuario(nome, senha){
     if(nome === admin.nome && senha == admin.senha){
         return(true);
