@@ -1,4 +1,5 @@
 import { ClubesPorEstado } from "./dados.js";
+import { showToast, renderizarJogadores } from './utils.js';
 
 const estadoBusca = document.querySelector('#estado-busca');
 const dataBusca= document.querySelector('#data-busca');
@@ -8,14 +9,14 @@ const botaoBusca = document.querySelector('#botao-busca');
 
 function atualizarClubes() {
     const estadoSelecionado = estadoBusca.value;
-
+    
     // Limpa as opções atuais
     clubeBusca.innerHTML = '<option value="">Todos os clubes</option>';
-
+    
     if (!estadoSelecionado || !ClubesPorEstado[estadoSelecionado]) return;
-
+    
     const clubes = ClubesPorEstado[estadoSelecionado];
-
+    
     clubes.forEach(clube => {
         const option = document.createElement('option');
         option.value = clube.id;
@@ -25,7 +26,13 @@ function atualizarClubes() {
 }
 
 // Escuta a mudança no select de estado
-function buscaClube() {
-    
-}
+botaoBusca.addEventListener('click', () => {
+    if (clubeBusca.value == '') {
+        showToast('Selecione um clube!', 'error');
+        return;
+    }
+    const container = document.querySelector('#lista-jogadores');
+    container.style.display = 'grid';
+    renderizarJogadores(clubeBusca.value, container);
+});
 estadoBusca.addEventListener('change', atualizarClubes);

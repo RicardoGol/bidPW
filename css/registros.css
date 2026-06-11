@@ -6,12 +6,12 @@
 .botao-voltar {
     display: inline-block;
     margin: 1.5rem 2rem;
-    padding: 16px 40px;
+    padding: 8px 20px;
     background-color: var(--verde-cbf);
     color: #fff;
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.85rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
@@ -35,7 +35,7 @@
     display: block;
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     letter-spacing: 0.2em;
     color: var(--verde-cbf);
     margin-bottom: 1rem;
@@ -163,7 +163,7 @@
     display: block;
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 1.15rem;
     letter-spacing: 0.2em;
     color: var(--verde-cbf);
     margin-bottom: 1.5rem;
@@ -208,4 +208,71 @@
         margin: 1rem;
         max-width: 100%;
     }
+}
+
+/* ── CAMPOS DO MODAL ── */
+.campo-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+.campo-modal label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
+
+.campo-modal input,
+.campo-modal select {
+    padding: 9px 12px;
+    background-color: #F5F5F5;
+    border: 1px solid var(--borda);
+    border-radius: 2px;
+    color: var(--texto);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.campo-modal input:focus,
+.campo-modal select:focus {
+    border-color: var(--verde-cbf);
+    background-color: #fff;
+}
+
+/* ── BOTÃO CONFIRMAR ── */
+#botao-confirmar-registro {
+    width: 100%;
+    padding: 11px;
+    background-color: var(--verde-cbf);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+#botao-confirmar-registro:hover {
+    background-color: #005229;
+}
+
+#botao-confirmar-registro:active {
+    background-color: #003d1f;
+}
+#botao-abrir-modal.desabilitado {
+    background-color: var(--borda);
+    color: var(--texto-suave);
+    cursor: not-allowed;
 }

@@ -23,7 +23,7 @@
     --verde-cbf: #006633;
     --amarelo-cbf: #F5C900;
     --fundo: #d8d8d8;
-    --superficie: white;
+    --superficie: #FFFFFF;
     --borda: #C8C8C8;
     --texto: #1A1A1A;
     --texto-suave: #666666;
@@ -82,9 +82,88 @@ header a:last-child:hover {
     background-color: #d4ad00;
 }
 
+/* ── CARDS DE JOGADORES ── */
+#lista-jogadores {
+    display: none; /* escondido por padrão */
+    max-width: 720px;
+    margin: 1.5rem auto;
+    padding: 0 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.sem-jogadores {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+    padding: 2rem 0;
+}
+
+.card-jogador {
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-top: 3px solid var(--verde-cbf);
+    border-radius: 2px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    transition: box-shadow 0.2s;
+}
+
+.card-jogador:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+}
+
+.card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--borda);
+}
+
+.card-nome {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--texto);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.card-apelido {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.card-info span {
+    font-size: 0.82rem;
+    color: var(--texto);
+}
+
+.card-info strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--verde-cbf);
+}
+
 /* ── RESPONSIVO ── */
 @media (max-width: 520px) {
     header {
         padding: 0 1rem;
+    }
+
+    #lista-jogadores {
+        grid-template-columns: 1fr;
     }
 }
