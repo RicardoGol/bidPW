@@ -5,6 +5,7 @@ const estadoBusca = document.querySelector('#estado-busca');
 const dataBusca= document.querySelector('#data-busca');
 const clubeBusca = document.querySelector('#clube-busca');
 const botaoBusca = document.querySelector('#botao-busca');
+const botao_login = document.querySelector('#botao_login')
 /* buscaEstados */
 
 function atualizarClubes() {
@@ -36,3 +37,13 @@ botaoBusca.addEventListener('click', () => {
     renderizarJogadores(clubeBusca.value, container);
 });
 estadoBusca.addEventListener('change', atualizarClubes);
+
+botao_login.addEventListener('click', ()=>{
+    const autenticado = localStorage.getItem('autenticado') || sessionStorage.getItem('autenticado');
+    if (!autenticado) {
+        window.location.href = './PaginaLogin.html';
+    }
+    else{
+        window.location.href = './PaginaRegistros.html';
+    }
+})

@@ -40,7 +40,7 @@ export function loadFromLocalStorage(key) {
     return JSON.parse(json);
 }
 
-export function renderizarJogadores(clubeId, container) {
+export function renderizarJogadores(clubeId, container, podeRescindir = false) {
     const jogadores = loadFromLocalStorage('jogadores');
     const filtrados = jogadores.filter(j => j.clube.id === parseInt(clubeId) && j.ativo);
 
@@ -54,6 +54,11 @@ export function renderizarJogadores(clubeId, container) {
     filtrados.forEach(jogador => {
         const card = document.createElement('div');
         card.classList.add('card-jogador');
+
+        const botaoRescindir = (podeRescindir && jogador.contrato.tipo !== 'rescisao') ? `
+            <button class="botao-rescindir" data-id="${jogador.id}">Rescindir</button>
+        ` : '';
+
         card.innerHTML = `
             <div class="card-header">
                 <span class="card-nome">${jogador.nome}</span>
@@ -67,7 +72,24 @@ export function renderizarJogadores(clubeId, container) {
                 <span><strong>Inscrição:</strong> ${jogador.contrato.inscricao}</span>
                 <span><strong>Nascimento:</strong> ${jogador.nascimento}</span>
             </div>
+            ${botaoRescindir}
         `;
+
+        // Adiciona o evento no botão de rescindir
+        const btn = card.querySelector('.botao-rescindir');
+        if (btn) {
+            btn.addEventListener('click', () => {
+                const todos = loadFromLocalStorage('jogadores');
+                const idx = todos.findIndex(j => j.id === jogador.id);
+                if (idx !== -1) {
+                    todos[idx].contrato.tipo = 'rescisao';
+                    saveToLocalStorage('jogadores', todos);
+                    renderizarJogadores(clubeId, container);
+                }
+            });
+        }
+
         container.appendChild(card);
     });
 }
+
