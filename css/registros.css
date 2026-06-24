@@ -278,7 +278,8 @@
 #botao-confirmar-registro:active {
     background-color: #003d1f;
 }
-#botao-abrir-modal.desabilitado {
+#botao-abrir-modal.desabilitado,
+#botao-abrir-modal-partida.desabilitado {
     background-color: var(--borda);
     color: var(--texto-suave);
     cursor: not-allowed;

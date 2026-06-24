@@ -10,6 +10,7 @@ const botaoFecharModal = document.querySelector('#botao-fechar-modal');
 const overlayModal = document.querySelector('#overlay-modal');
 const botaoConfirmar = document.querySelector('#botao-confirmar-registro')
 const botaoLogout = document.querySelector('#logout');
+const botaoAbrirModalPartida = document.querySelector('#botao-abrir-modal-partida');
 
 const JOGADORES_KEY = 'jogadores';
 
@@ -39,13 +40,13 @@ var modalHabilitado = false;
 
 clubeBusca.addEventListener('change', () => {
     modalHabilitado = clubeBusca.value !== '';
-    if (modalHabilitado) {
-        botaoAbrirModal.classList.remove('desabilitado');
-        document.querySelector('#botao-abrir-modal-partida').classList.remove('desabilitado');
-    } else {
-        botaoAbrirModal.classList.add('desabilitado');
-        document.querySelector('#botao-abrir-modal-partida').classList.add('desabilitado');
-    }
+        if (modalHabilitado) {
+            botaoAbrirModal.classList.remove('desabilitado');
+            botaoAbrirModalPartida.classList.remove('desabilitado');
+        } else {
+            botaoAbrirModal.classList.add('desabilitado');
+            botaoAbrirModalPartida.classList.add('desabilitado');
+        }
 });
 
 botaoAbrirModal.addEventListener('click', () => {
@@ -135,7 +136,6 @@ async function registrarJogador() {
 
 botaoConfirmar.addEventListener('click', registrarJogador);
 
-const botaoAbrirModalPartida = document.querySelector('#botao-abrir-modal-partida');
 botaoAbrirModalPartida.addEventListener('click', () => {
     if (!modalHabilitado) {
         showToast('Selecione um clube primeiro!', 'error');
@@ -181,7 +181,7 @@ botao_teste.addEventListener('click', () =>{
         id: Date.now() -1,
         nome: 'Vinicius Tavares Guimarães',
         apelido: 'Guimarães',
-        nascimento: '1979-05-12',
+        nascimento: '1982-03-09',
         contrato: {
             numero: 10,
             tipo: 'definitivo',
@@ -283,6 +283,21 @@ botao_teste.addEventListener('click', () =>{
         ativo: true,
     },
     {
+        id: Date.now() + 8,
+        nome: 'Cristhofer Guilherme Rodrigues Madrid',
+        apelido: 'Nego Madrid',
+        nascimento: '2008-08-21',
+        contrato: {
+            numero: 5,
+            tipo: 'emprestimo',
+            publicacao: '2026-06-22',
+            inicio: '2026-06-26',
+            inscricao: parseInt(50)
+        },
+        clube,
+        ativo: true,
+    },
+    {
         id: Date.now() + 6,
         nome: 'Isabella Lima Lopes',
         apelido: 'Isa Lopes',
@@ -316,7 +331,7 @@ botao_teste.addEventListener('click', () =>{
         id: Date.now() + 12,
         nome: 'Altemir Silva da Silva',
         apelido: 'Altamir',
-        nascimento: '2009-03-17',
+        nascimento: '2008-03-17',
         contrato: {
             numero: 6,
             tipo: 'emprestimo',
@@ -338,21 +353,6 @@ botao_teste.addEventListener('click', () =>{
             publicacao: '2026-06-22',
             inicio: '2026-06-26',
             inscricao: parseInt(13)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 8,
-        nome: 'Max',
-        apelido: 'Max',
-        nascimento: '2009-04-13',
-        contrato: {
-            numero: 20,
-            tipo: 'emprestimo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(50)
         },
         clube,
         ativo: true,
