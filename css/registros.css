@@ -111,7 +111,8 @@
     background-color: #003d1f;
 }
 
-#botao-abrir-modal {
+#botao-abrir-modal,
+#botao-abrir-modal-partida {
     padding: 12px 24px;
     background-color: var(--amarelo-cbf);
     color: #1A1A1A;
@@ -124,6 +125,11 @@
     border-radius: 2px;
     cursor: pointer;
     transition: background-color 0.2s;
+}
+
+#botao-abrir-modal:hover,
+#botao-abrir-modal-partida:hover {
+    background-color: #d4ad00;
 }
 
 #botao-abrir-modal:hover {

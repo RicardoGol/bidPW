@@ -16,7 +16,7 @@ const inputNome = document.querySelector('#nome-usuario');
 const inputSenha = document.querySelector('#senha-usuario');
 
 document.querySelector("#botao-confirmar-login").addEventListener('click', () => {
-    if (validarUsuario(inputNome.value, inputSenha.value)) {
+    if (validarUsuario(inputNome.value.trim(), inputSenha.value)) {
         const manterLogado = document.querySelector('#manter-logado').checked;
         
         if (manterLogado) {

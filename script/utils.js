@@ -54,15 +54,20 @@ export function renderizarJogadores(clubeId, container, podeRescindir = false) {
     filtrados.forEach(jogador => {
         const card = document.createElement('div');
         card.classList.add('card-jogador');
-
-        const botaoRescindir = (podeRescindir && jogador.contrato.tipo !== 'rescisao') ? `
+        if (jogador.contrato.tipo.toLowerCase() === 'rescisao') {
+            card.classList.add('card-rescindido');
+        }
+        const botaoRescindir = (podeRescindir && jogador.contrato.tipo.toLowerCase() !== 'rescisao') ? `
             <button class="botao-rescindir" data-id="${jogador.id}">Rescindir</button>
         ` : '';
 
-        card.innerHTML = `
+            card.innerHTML = `
             <div class="card-header">
-                <span class="card-nome">${jogador.nome}</span>
-                <span class="card-apelido">${jogador.apelido || ''}</span>
+                ${jogador.foto ? `<img src="${jogador.foto}" class="card-foto">` : '<div class="card-foto-placeholder"></div>'}
+                <div>
+                    <span class="card-nome">${jogador.nome}: ${jogador.contrato.numero}</span>
+                    <span class="card-apelido">${jogador.apelido || ''}</span>
+                </div>
             </div>
             <div class="card-info">
                 <span><strong>Clube:</strong> ${jogador.clube.name}</span>
@@ -72,8 +77,12 @@ export function renderizarJogadores(clubeId, container, podeRescindir = false) {
                 <span><strong>Inscrição:</strong> ${jogador.contrato.inscricao}</span>
                 <span><strong>Nascimento:</strong> ${jogador.nascimento}</span>
             </div>
-            ${botaoRescindir}
-        `;
+            ${botaoRescindir}`
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', (e) => {
+                if (e.target.classList.contains('botao-rescindir')) return;
+                abrirModalEstatisticas(jogador.id);
+            });
 
         // Adiciona o evento no botão de rescindir
         const btn = card.querySelector('.botao-rescindir');
@@ -84,7 +93,7 @@ export function renderizarJogadores(clubeId, container, podeRescindir = false) {
                 if (idx !== -1) {
                     todos[idx].contrato.tipo = 'rescisao';
                     saveToLocalStorage('jogadores', todos);
-                    renderizarJogadores(clubeId, container);
+                    renderizarJogadores(clubeId, container, podeRescindir); // passa podeRescindir
                 }
             });
         }
@@ -93,3 +102,43 @@ export function renderizarJogadores(clubeId, container, podeRescindir = false) {
     });
 }
 
+export function abrirModalEstatisticas(jogadorId) {
+    const partidas = loadFromLocalStorage('partidas');
+    const jogadores = loadFromLocalStorage('jogadores');
+    const jogador = jogadores.find(j => j.id === jogadorId);
+
+    // Coleta stats de todas as partidas
+    const stats = {
+        gols: 0,
+        assistencias: 0,
+        cartaoAmarelo: 0,
+        cartaoVermelho: 0,
+        substituicoes: 0,
+        partidas: 0
+    };
+
+    partidas.forEach(partida => {
+        const todos = [...partida.mandante.titulares, ...partida.mandante.reservas];
+        const encontrado = todos.find(j => j.id === jogadorId);
+        if (encontrado) {
+            stats.partidas++;
+            stats.gols += encontrado.gols || 0;
+            stats.assistencias += encontrado.assistencias || 0;
+            if (encontrado.cartaoAmarelo) stats.cartaoAmarelo++;
+            if (encontrado.cartaoVermelho) stats.cartaoVermelho++;
+            if (encontrado.substituicao) stats.substituicoes++;
+        }
+    });
+
+    // Preenche o modal
+    document.querySelector('#stats-nome').textContent = jogador.nome;
+    document.querySelector('#stats-apelido').textContent = jogador.apelido || '';
+    document.querySelector('#stats-partidas').textContent = stats.partidas;
+    document.querySelector('#stats-gols').textContent = stats.gols;
+    document.querySelector('#stats-assistencias').textContent = stats.assistencias;
+    document.querySelector('#stats-amarelo').textContent = stats.cartaoAmarelo;
+    document.querySelector('#stats-vermelho').textContent = stats.cartaoVermelho;
+    document.querySelector('#stats-substituicoes').textContent = stats.substituicoes;
+
+    document.querySelector('#overlay-modal-stats').classList.add('ativo');
+}

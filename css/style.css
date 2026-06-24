@@ -160,6 +160,32 @@ header a:last-child:hover {
     color: var(--verde-cbf);
 }
 
+.card-jogador.card-rescindido {
+    background-color: #e2e2e2;
+    border-top-color: var(--amarelo-cbf);
+}
+.card-foto {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--borda);
+}
+
+.card-foto-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--borda);
+    flex-shrink: 0;
+}
+
+.card-header {
+    flex-direction: row; /* muda pra row pra foto ficar do lado */
+    align-items: center;
+    gap: 0.75rem;
+}
+
 /* ── RESPONSIVO ── */
 @media (max-width: 520px) {
     header {
@@ -192,3 +218,101 @@ header a:last-child:hover {
     background-color: #c0392b;
     color: #fff;
 }
+/* ── MODAL ESTATÍSTICAS ── */
+#overlay-modal-stats {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+#overlay-modal-stats.ativo {
+    display: flex;
+}
+
+#modal-stats {
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-top: 3px solid var(--verde-cbf);
+    border-radius: 2px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+#botao-fechar-stats {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--texto-suave);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+#botao-fechar-stats:hover {
+    color: var(--texto);
+}
+
+.stats-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--borda);
+}
+
+.stats-header #stats-nome {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stats-header #stats-apelido {
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    background-color: #F5F5F5;
+    border-radius: 2px;
+    border: 1px solid var(--borda);
+}
+
+.stat-valor {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--verde-cbf);
+}
+
+.stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
+
+.stat-item.amarelo .stat-valor { color: #e6a817; }
+.stat-item.vermelho .stat-valor { color: #c0392b; }

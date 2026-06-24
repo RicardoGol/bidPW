@@ -1,6 +1,6 @@
 import { ClubesPorEstado } from "./dados.js";
-import { showToast, saveToLocalStorage, loadFromLocalStorage } from "./utils.js";
-import { renderizarJogadores } from './utils.js';
+import { showToast, saveToLocalStorage, loadFromLocalStorage, renderizarJogadores } from "./utils.js";
+import { abrirModalPartida } from './partidas.js';
 
 const estadoBusca = document.querySelector('#estado-busca');
 const clubeBusca = document.querySelector('#clube-busca');
@@ -41,8 +41,10 @@ clubeBusca.addEventListener('change', () => {
     modalHabilitado = clubeBusca.value !== '';
     if (modalHabilitado) {
         botaoAbrirModal.classList.remove('desabilitado');
+        document.querySelector('#botao-abrir-modal-partida').classList.remove('desabilitado');
     } else {
         botaoAbrirModal.classList.add('desabilitado');
+        document.querySelector('#botao-abrir-modal-partida').classList.add('desabilitado');
     }
 });
 
@@ -63,7 +65,7 @@ overlayModal.addEventListener('click', (e) => {
 });
 
 // ── REGISTRO ──
-function registrarJogador() {
+async function registrarJogador() {
     const nome = document.querySelector('#registrar-nome').value.trim();
     const apelido = document.querySelector('#registrar-apelido').value.trim();
     const nascimento = document.querySelector('#registrar-nascimento').value;
@@ -72,25 +74,35 @@ function registrarJogador() {
     const publicacao = document.querySelector('#registrar-publicacao').value;
     const inicio = document.querySelector('#registrar-inicio').value;
     const inscricao = document.querySelector('#registrar-inscricao').value;
-    
-    // Validação básica
+    const fotoInput = document.querySelector('#registrar-foto');
+
     if (!nome || !nascimento || !contrato || !publicacao || !inicio || !inscricao) {
         showToast('Preencha todos os campos obrigatórios!', 'error');
         return;
     }
-    
-    // Busca o clube selecionado nos dados
+
+    // Converte foto para base64 se tiver uma
+    let fotoBase64 = null;
+    if (fotoInput.files[0]) {
+        fotoBase64 = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(fotoInput.files[0]);
+        });
+    }
+
     const estadoSelecionado = estadoBusca.value;
     const clubeId = parseInt(clubeBusca.value);
     const clube = ClubesPorEstado[estadoSelecionado].find(c => c.id === clubeId);
-    
+
     const jogadores = loadFromLocalStorage(JOGADORES_KEY);
-    
+
     const novoJogador = {
-        id: Date.now(), // id único baseado no timestamp
+        id: Date.now(),
         nome,
         apelido,
         nascimento,
+        foto: fotoBase64, // null se não tiver foto
         contrato: {
             numero: contrato,
             tipo,
@@ -101,10 +113,10 @@ function registrarJogador() {
         clube,
         ativo: true
     };
-    
+
     jogadores.push(novoJogador);
     saveToLocalStorage(JOGADORES_KEY, jogadores);
-    
+
     showToast(`${nome} registrado com sucesso!`, 'success');
     overlayModal.classList.remove('ativo');
     document.querySelector('#registrar-nome').value = '';
@@ -115,9 +127,22 @@ function registrarJogador() {
     document.querySelector('#registrar-publicacao').value = '';
     document.querySelector('#registrar-inicio').value = '';
     document.querySelector('#registrar-inscricao').value = '';
+    document.querySelector('#registrar-foto').value = '';
+    const container = document.querySelector('#lista-jogadores');
+    container.style.display = 'grid';
+    renderizarJogadores(clubeBusca.value, container, true);
 }
 
 botaoConfirmar.addEventListener('click', registrarJogador);
+
+const botaoAbrirModalPartida = document.querySelector('#botao-abrir-modal-partida');
+botaoAbrirModalPartida.addEventListener('click', () => {
+    if (!modalHabilitado) {
+        showToast('Selecione um clube primeiro!', 'error');
+        return;
+    }
+    abrirModalPartida(clubeBusca.value);
+});
 
 botaoBusca.addEventListener('click', () => {
     if (clubeBusca.value == '') {
@@ -171,7 +196,7 @@ botao_teste.addEventListener('click', () =>{
         id: Date.now(),
         nome: 'Sergio Yoshimitsu Fujii',
         apelido: 'Fujii',
-        nascimento: '2026-06-24',
+        nascimento: '1982-06-28',
         contrato: {
             numero: 2,
             tipo: 'definitivo',
@@ -201,7 +226,7 @@ botao_teste.addEventListener('click', () =>{
         id: Date.now() + 2,
         nome: 'Lara Oliveira Menezes',
         apelido: 'Lara',
-        nascimento: '2008-08-17',
+        nascimento: '2008-08-28',
         contrato: {
             numero: 25,
             tipo: 'definitivo',
@@ -216,7 +241,7 @@ botao_teste.addEventListener('click', () =>{
         id: Date.now() + 3,
         nome: 'Marina da Silva Pereira',
         apelido: 'Nina',
-        nascimento: '2009-10-17',
+        nascimento: '2009-10-26',
         contrato: {
             numero: 26,
             tipo: 'definitivo',
@@ -334,7 +359,7 @@ botao_teste.addEventListener('click', () =>{
     },
     {
         id: Date.now() + 9,
-        nome: 'Lukas da Silva',
+        nome: 'Lukas da Silva Nogueira',
         apelido: 'Lukinhas',
         nascimento: '2010-06-18',
         contrato: {
@@ -369,7 +394,7 @@ botao_teste.addEventListener('click', () =>{
         nascimento: '2000-01-01',
         contrato: {
             numero: 99,
-            tipo: 'Rescisão',
+            tipo: 'rescisao',
             publicacao: '2026-01-22',
             inicio: '2026-01-26',
             inscricao: parseInt(80)

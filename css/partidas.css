@@ -1,0 +1,256 @@
+/* =============================================
+   partidas.css — estilos do modal de partidas
+============================================= */
+
+/* ── OVERLAY ── */
+#overlay-modal-partida {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+#overlay-modal-partida.ativo {
+    display: flex;
+}
+
+#modal-partida {
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-top: 3px solid var(--verde-cbf);
+    border-radius: 2px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 540px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+#modal-partida::before {
+    content: 'REGISTRAR PARTIDA';
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--verde-cbf);
+    margin-bottom: 1.5rem;
+}
+
+#botao-fechar-modal-partida {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--texto-suave);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+#botao-fechar-modal-partida:hover {
+    color: var(--texto);
+}
+
+/* ── LISTA DE SELEÇÃO ── */
+.lista-selecao {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid var(--borda);
+    border-radius: 2px;
+    padding: 0.5rem;
+    background-color: #F5F5F5;
+}
+
+.item-selecao {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 2px;
+    transition: background-color 0.15s;
+}
+
+.item-selecao:hover {
+    background-color: #ebebeb;
+}
+
+.item-selecao input[type="checkbox"] {
+    accent-color: var(--verde-cbf);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.item-selecao label {
+    font-size: 0.85rem;
+    color: var(--texto);
+    cursor: pointer;
+}
+
+.item-selecao label span {
+    color: var(--texto-suave);
+    font-size: 0.78rem;
+}
+
+.item-selecao input:disabled + label {
+    color: var(--texto-suave);
+    text-decoration: line-through;
+}
+
+/* Contador */
+#contador-titulares,
+#contador-reservas {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+/* ── BOTÕES DO MODAL ── */
+#botao-proxima-etapa,
+#botao-confirmar-partida {
+    width: 100%;
+    padding: 11px;
+    background-color: var(--verde-cbf);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.2s;
+}
+
+#botao-proxima-etapa:hover,
+#botao-confirmar-partida:hover {
+    background-color: #005229;
+}
+
+#botao-proxima-etapa:disabled {
+    background-color: var(--borda);
+    color: var(--texto-suave);
+    cursor: not-allowed;
+}
+
+#botao-etapa-anterior {
+    background: none;
+    border: none;
+    color: var(--verde-cbf);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+#botao-etapa-anterior:hover {
+    text-decoration: underline;
+}
+
+/* ── STATS JOGADORES ── */
+.stats-grupo-titulo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--verde-cbf);
+    text-transform: uppercase;
+    margin: 1rem 0 0.5rem;
+}
+
+.item-stats {
+    background-color: #F5F5F5;
+    border: 1px solid var(--borda);
+    border-radius: 2px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.stats-nome {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--texto);
+    margin-bottom: 0.5rem;
+}
+
+.stats-nome span {
+    font-weight: 400;
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+}
+
+.stats-campos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.stats-campos label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
+
+.stats-campos input[type="number"],
+.stats-campos select {
+    padding: 6px 8px;
+    background-color: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 2px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    color: var(--texto);
+    outline: none;
+}
+
+.stats-campos input[type="number"]:focus,
+.stats-campos select:focus {
+    border-color: var(--verde-cbf);
+}
+
+.stat-check {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.4rem !important;
+}
+
+.stat-check input[type="checkbox"] {
+    accent-color: var(--verde-cbf);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.aviso-modal {
+    font-size: 0.85rem;
+    color: #c0392b;
+    padding: 0.5rem;
+}

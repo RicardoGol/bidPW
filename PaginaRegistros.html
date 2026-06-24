@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/registros.css">
+    <link rel="stylesheet" href="css/partidas.css">
 </head>
 <body>
     <header>
@@ -72,6 +73,7 @@
         <div class="botoes-acao">
             <button id="botao-busca">Buscar</button>
             <button id="botao-abrir-modal" class="desabilitado">+ Registrar Jogador</button>
+            <button id="botao-abrir-modal-partida" class="desabilitado">+ Registrar Partida</button>
         </div>
     </div>
      <div id="lista-jogadores"></div>
@@ -131,6 +133,91 @@
             </div>
             
             <button id="botao-confirmar-registro">Confirmar Registro</button>
+        </div>
+    </div>
+
+    <!-- Modal Partida -->
+    <div id="overlay-modal-partida">
+        <div id="modal-partida">
+            <button id="botao-fechar-modal-partida">✕</button>
+
+            <!-- ETAPA 1 -->
+            <div id="etapa-1">
+                <div class="campo-modal">
+                    <label>Data da Partida</label>
+                    <input type="date" id="partida-data">
+                </div>
+
+                <div class="campo-modal">
+                    <label>Estado do Visitante</label>
+                    <select id="partida-estado-visitante">
+                        <option value="">Estados</option>
+                        <optgroup label="Sul">
+                            <option value="Parana">PR</option>
+                            <option value="Rio Grande do Sul">RS</option>
+                            <option value="Santa Catarina">SC</option>
+                        </optgroup>
+                        <optgroup label="Sudeste">
+                            <option value="Espirito Santo">ES</option>
+                            <option value="Minas Gerais">MG</option>
+                            <option value="Rio de Janeiro">RJ</option>
+                            <option value="Sao Paulo">SP</option>
+                        </optgroup>
+                        <optgroup label="Centro-Oeste">
+                            <option value="Distrito Federal">DF</option>
+                            <option value="Goias">GO</option>
+                            <option value="Mato grosso do Sul">MS</option>
+                            <option value="Mato Grosso">MT</option>
+                        </optgroup>
+                        <optgroup label="Nordeste">
+                            <option value="Alagoas">AL</option>
+                            <option value="Bahia">BA</option>
+                            <option value="Ceara">CE</option>
+                            <option value="Maranhao">MA</option>
+                            <option value="Paraiba">PB</option>
+                            <option value="Pernambuco">PE</option>
+                            <option value="Piaui">PI</option>
+                            <option value="Rio Grande do Norte">RN</option>
+                            <option value="Sergipe">SE</option>
+                        </optgroup>
+                        <optgroup label="Norte">
+                            <option value="Acre">AC</option>
+                            <option value="Amazonas">AM</option>
+                            <option value="Amapa">AP</option>
+                            <option value="Para">PA</option>
+                            <option value="Rondonia">RO</option>
+                            <option value="Roraima">RR</option>
+                            <option value="Tocantins">TO</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="campo-modal">
+                    <label>Clube Visitante</label>
+                    <select id="partida-clube-visitante">
+                        <option value="">Selecione o estado primeiro</option>
+                    </select>
+                </div>
+
+                <div class="campo-modal">
+                    <label>Titulares <span id="contador-titulares">(0/11)</span></label>
+                    <div id="lista-selecao-titulares" class="lista-selecao"></div>
+                </div>
+
+                <div class="campo-modal">
+                    <label>Reservas <span id="contador-reservas">(0/12)</span></label>
+                    <div id="lista-selecao-reservas" class="lista-selecao"></div>
+                </div>
+
+                <button id="botao-proxima-etapa">Próxima Etapa →</button>
+            </div>
+
+            <!-- ETAPA 2 -->
+            <div id="etapa-2" style="display:none">
+                <button id="botao-etapa-anterior">← Voltar</button>
+                <div id="lista-stats-jogadores"></div>
+                <button id="botao-confirmar-partida">Confirmar Partida</button>
+            </div>
         </div>
     </div>
 </body>
