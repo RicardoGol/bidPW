@@ -40,10 +40,10 @@ export function loadFromLocalStorage(key) {
     return JSON.parse(json);
 }
 
-export function renderizarJogadores(clubeId, container, podeRescindir = false) {
-    const jogadores = loadFromLocalStorage('jogadores');
-    const filtrados = jogadores.filter(j => j.clube.id === parseInt(clubeId) && j.ativo);
-
+export async function renderizarJogadores(clubeId, container, podeRescindir = false) {
+    const resposta = await fetch(`php/api/listar_jogadores.php?clube_id=${clubeId}`)
+    const filtrados = await resposta.json();
+console.log(filtrados);
     container.innerHTML = '';
 
     if (filtrados.length === 0) {

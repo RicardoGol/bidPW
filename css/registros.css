@@ -125,6 +125,7 @@
     border-radius: 2px;
     cursor: pointer;
     transition: background-color 0.2s;
+
 }
 
 #botao-abrir-modal:hover,
@@ -163,6 +164,8 @@
     overflow-y: auto;
     box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     position: relative;
+    animation-duration: 0.3s;
+    animation-name: abrirRegistro;
 }
 
 #modal-registro::before {
@@ -192,6 +195,7 @@
 #botao-fechar-modal:hover {
     color: var(--texto);
 }
+
 
 /* ── RESPONSIVO ── */
 @media (max-width: 520px) {

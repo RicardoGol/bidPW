@@ -43,11 +43,13 @@ overlayModalPartida.addEventListener('click', (e) => {
 });
 
 // ── VISITANTE ──
-partidaEstadoVisitante.addEventListener('change', () => {
+partidaEstadoVisitante.addEventListener('change', async () => {
     const estado = partidaEstadoVisitante.value;
     partidaClubeVisitante.innerHTML = '<option value="">Selecione o clube</option>';
-    if (!estado || !ClubesPorEstado[estado]) return;
-    ClubesPorEstado[estado].forEach(clube => {
+    if (!estado) return;
+    const resposta = await fetch(`php/api/listar_clubes.php?estado=${estado}`)
+    const clubes = await resposta.json();
+    clubes.forEach(clube => {
         const option = document.createElement('option');
         option.value = clube.id;
         option.textContent = `${clube.name} (Série ${clube.division})`;

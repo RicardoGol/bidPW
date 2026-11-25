@@ -1,4 +1,3 @@
-import { ClubesPorEstado } from "./dados.js";
 import { showToast, renderizarJogadores, abrirModalEstatisticas} from './utils.js';
 
 const estadoBusca = document.querySelector('#estado-busca');
@@ -8,15 +7,15 @@ const botaoBusca = document.querySelector('#botao-busca');
 const botao_login = document.querySelector('#botao_login')
 /* buscaEstados */
 
-function atualizarClubes() {
+async function atualizarClubes() {
     const estadoSelecionado = estadoBusca.value;
     
     // Limpa as opções atuais
     clubeBusca.innerHTML = '<option value="">Todos os clubes</option>';
     
-    if (!estadoSelecionado || !ClubesPorEstado[estadoSelecionado]) return;
-    
-    const clubes = ClubesPorEstado[estadoSelecionado];
+    if (!estadoSelecionado) return;
+    const resposta = await fetch(`php/api/listar_clubes.php?estado=${estadoSelecionado}`)
+    const clubes = await resposta.json();
     
     clubes.forEach(clube => {
         const option = document.createElement('option');

@@ -186,6 +186,15 @@ header a:last-child:hover {
     gap: 0.75rem;
 }
 
+@keyframes abrirRegistro {
+    0%{
+        scale: 0;
+    }
+    100%{
+        scale: 1;
+    }
+}
+
 /* ── RESPONSIVO ── */
 @media (max-width: 520px) {
     header {
@@ -243,6 +252,8 @@ header a:last-child:hover {
     max-width: 400px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     position: relative;
+    animation-duration: 0.3s;
+    animation-name: abrirRegistro;
 }
 
 #botao-fechar-stats {

@@ -21,11 +21,17 @@ botaoLogout.addEventListener('click', () =>{
     window.location.href = './Index.html'
 })
 // ── CLUBES ──
-function atualizarClubes() {
+async function atualizarClubes() {
     const estadoSelecionado = estadoBusca.value;
+    
+    // Limpa as opções atuais
     clubeBusca.innerHTML = '<option value="">Todos os clubes</option>';
-    if (!estadoSelecionado || !ClubesPorEstado[estadoSelecionado]) return;
-    ClubesPorEstado[estadoSelecionado].forEach(clube => {
+    
+    if (!estadoSelecionado) return;
+    const resposta = await fetch(`php/api/listar_clubes.php?estado=${estadoSelecionado}`)
+    const clubes = await resposta.json();
+    
+    clubes.forEach(clube => {
         const option = document.createElement('option');
         option.value = clube.id;
         option.textContent = `${clube.name} (Série ${clube.division}) (ID ${clube.id})`;
@@ -70,14 +76,14 @@ async function registrarJogador() {
     const nome = document.querySelector('#registrar-nome').value.trim();
     const apelido = document.querySelector('#registrar-apelido').value.trim();
     const nascimento = document.querySelector('#registrar-nascimento').value;
-    const contrato = document.querySelector('#registrar-contrato').value.trim();
+    const camisa = document.querySelector('#registrar-camisa').value.trim();
     const tipo = document.querySelector('#tipoContrato').value;
     const publicacao = document.querySelector('#registrar-publicacao').value;
     const inicio = document.querySelector('#registrar-inicio').value;
     const inscricao = document.querySelector('#registrar-inscricao').value;
     const fotoInput = document.querySelector('#registrar-foto');
 
-    if (!nome || !nascimento || !contrato || !publicacao || !inicio || !inscricao) {
+    if (!nome || !nascimento || !camisa || !publicacao || !inicio || !inscricao) {
         showToast('Preencha todos os campos obrigatórios!', 'error');
         return;
     }
@@ -99,13 +105,13 @@ async function registrarJogador() {
     const jogadores = loadFromLocalStorage(JOGADORES_KEY);
 
     const novoJogador = {
-        id: Date.now(),
+        id: crypto.randomUUID(),
         nome,
         apelido,
         nascimento,
         foto: fotoBase64, // null se não tiver foto
         contrato: {
-            numero: contrato,
+            numero: camisa,
             tipo,
             publicacao,
             inicio,
@@ -114,7 +120,20 @@ async function registrarJogador() {
         clube,
         ativo: true
     };
-
+    let duplicado = false;
+    jogadores.forEach(jogador => {
+        if(jogador.nome === novoJogador.nome || jogador.contrato.numero === novoJogador.contrato.numero || jogador.contrato.inscricao === novoJogador.contrato.inscricao){
+            duplicado = true;
+        }
+        else{
+            duplicado = false;
+        }
+    });
+    console.log(duplicado + "    " + novoJogador)
+    if(duplicado){
+        showToast('Jogador com informações duplicadas!', 'error');
+        return;
+    }
     jogadores.push(novoJogador);
     saveToLocalStorage(JOGADORES_KEY, jogadores);
 
@@ -123,7 +142,7 @@ async function registrarJogador() {
     document.querySelector('#registrar-nome').value = '';
     document.querySelector('#registrar-apelido').value = '';
     document.querySelector('#registrar-nascimento').value = '';
-    document.querySelector('#registrar-contrato').value = '';
+    document.querySelector('#registrar-camisa').value = '';
     document.querySelector('#tipoContrato').value = 'definitivo';
     document.querySelector('#registrar-publicacao').value = '';
     document.querySelector('#registrar-inicio').value = '';
