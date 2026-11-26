@@ -2,6 +2,8 @@ CREATE DATABASE IF NOT EXISTS bid CHARACTER SET utf8mb4;
 USE bid;
 DROP TABLE IF EXISTS jogadores;
 DROP TABLE IF EXISTS clubes;
+DROP TABLE IF EXISTS partida_jogadores;
+DROP TABLE IF EXISTS partidas;
 create table if not EXISTS clubes (
     id INT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -158,4 +160,47 @@ CREATE TABLE jogadores (
     ativo BOOLEAN NOT NULL DEFAULT TRUE,
     clube_id INT NOT NULL,
     FOREIGN KEY (clube_id) REFERENCES clubes(id)
+) ENGINE=InnoDB;
+
+INSERT INTO jogadores
+    (nome, apelido, nascimento, camisa, tipo_contrato,
+     data_publicacao, inicio_contrato, inscricao, clube_id)
+VALUES
+('Vinicius Tavares Guimarães', 'Guimarães', '1982-03-09', 10, 'definitivo', '2026-06-22', '2026-06-26', 1, 5),
+('Sergio Yoshimitsu Fujii', 'Fujii', '1982-06-28', 2, 'definitivo', '2026-06-22', '2026-06-26', 2, 5),
+('Sophia Pradella Pereira', 'Pradella', '2009-06-17', 67, 'definitivo', '2026-06-22', '2026-06-26', 3, 5),
+('Lara Oliveira Menezes', 'Lara', '2008-08-28', 25, 'definitivo', '2026-06-22', '2026-06-26', 4, 5),
+('Marina da Silva Pereira', 'Nina', '2009-10-26', 26, 'definitivo', '2026-06-22', '2026-06-26', 5, 5),
+('Manuela Gonçalvaes Cairuga', 'Gonçalves', '2009-08-14', 69, 'definitivo', '2026-06-22', '2026-06-26', 6, 5),
+('Nicolas Vieira Madrid', 'Madrid', '2006-12-13', 4, 'definitivo', '2026-06-22', '2026-06-26', 7, 5),
+('Cristhofer Guilherme Rodrigues Madrid', 'Nego Madrid', '2008-08-21', 5, 'emprestimo', '2026-06-22', '2026-06-26', 50, 5),
+('Isabella Lima Lopes', 'Isa Lopes', '2009-06-22', 22, 'emprestimo', '2026-06-22', '2026-06-26', 8, 5),
+('Fillipe de Souza Machado', 'Fillipe', '2010-03-30', 9, 'emprestimo', '2026-06-22', '2026-06-26', 9, 5),
+('Altemir Silva da Silva', 'Altamir', '2008-03-17', 6, 'emprestimo', '2026-06-22', '2026-06-26', 12, 5),
+('Kamily Silva Naatz', 'Kemily', '2009-03-17', 7, 'emprestimo', '2026-06-22', '2026-06-26', 13, 5),
+('Lukas da Silva Nogueira', 'Lukinhas', '2010-06-18', 0, 'emprestimo', '2026-06-22', '2026-06-26', 10, 5),
+('Gustavo Kazanowski Netto', 'Kazanowski', '2009-10-20', 11, 'emprestimo', '2026-06-22', '2026-06-26', 11, 5),
+('AnaitaT', 'Anaitat', '2000-01-01', 99, 'rescisao', '2026-01-22', '2026-01-26', 80, 5);
+
+CREATE TABLE partidas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    data DATE NOT NULL,
+    mandante_id INT NOT NULL,
+    visitante_id INT NOT NULL,
+    FOREIGN KEY (mandante_id) REFERENCES clubes(id),
+    FOREIGN KEY (visitante_id) REFERENCES clubes(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE partida_jogadores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    partida_id INT NOT NULL,
+    jogador_id INT NOT NULL,
+    titular BOOLEAN NOT NULL,
+    gols INT NOT NULL DEFAULT 0,
+    assistencias INT NOT NULL DEFAULT 0,
+    cartao_amarelo BOOLEAN NOT NULL DEFAULT FALSE,
+    cartao_vermelho BOOLEAN NOT NULL DEFAULT FALSE,
+    substituicao VARCHAR(10),
+    FOREIGN KEY (partida_id) REFERENCES partidas(id),
+    FOREIGN KEY (jogador_id) REFERENCES jogadores(id)
 ) ENGINE=InnoDB;

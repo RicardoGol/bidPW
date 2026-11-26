@@ -1,0 +1,14 @@
+<h1 id="saida"></h1>
+
+<script>
+async function buscar() {
+    const resposta = await fetch('php/api/registrar_jogador.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario: 'admin', senha: '0000' })
+    });
+    const dados = await resposta.json();
+    document.querySelector('#saida').textContent = JSON.stringify(dados);
+}
+buscar();
+</script>

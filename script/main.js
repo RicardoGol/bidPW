@@ -37,16 +37,11 @@ botaoBusca.addEventListener('click', () => {
 });
 estadoBusca.addEventListener('change', atualizarClubes);
 
-botao_login.addEventListener('click', ()=>{
-    const autenticado = localStorage.getItem('autenticado') || sessionStorage.getItem('autenticado');
-    if (!autenticado) {
-        window.location.href = './PaginaLogin.html';
-    }
-    else{
-        window.location.href = './PaginaRegistros.html';
-    }
-})
-
+botao_login.addEventListener('click', async () => {
+    const resposta = await fetch('php/api/verificar_sessao.php');
+    const sessao = await resposta.json();
+    window.location.href = sessao.logado ? './PaginaRegistros.html' : './PaginaLogin.html';
+});
 document.querySelector('#botao-fechar-stats').addEventListener('click', () => {
     document.querySelector('#overlay-modal-stats').classList.remove('ativo');
 });

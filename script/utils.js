@@ -43,7 +43,6 @@ export function loadFromLocalStorage(key) {
 export async function renderizarJogadores(clubeId, container, podeRescindir = false) {
     const resposta = await fetch(`php/api/listar_jogadores.php?clube_id=${clubeId}`)
     const filtrados = await resposta.json();
-console.log(filtrados);
     container.innerHTML = '';
 
     if (filtrados.length === 0) {
@@ -85,50 +84,35 @@ console.log(filtrados);
             });
 
         // Adiciona o evento no botão de rescindir
-        const btn = card.querySelector('.botao-rescindir');
-        if (btn) {
-            btn.addEventListener('click', () => {
-                const todos = loadFromLocalStorage('jogadores');
-                const idx = todos.findIndex(j => j.id === jogador.id);
-                if (idx !== -1) {
-                    todos[idx].contrato.tipo = 'rescisao';
-                    saveToLocalStorage('jogadores', todos);
-                    renderizarJogadores(clubeId, container, podeRescindir); // passa podeRescindir
+            const btn = card.querySelector('.botao-rescindir');
+            if (btn) {
+            btn.addEventListener('click', async () => {
+                const resposta = await fetch('php/api/rescindir_jogador.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: jogador.id })     // lacuna: o id deste jogador
+                });
+                const resultado = await resposta.json();               // lacuna: abrir a bandeja
+
+                if (resultado.erro) {
+                    showToast(resultado.erro, 'error');
+                    return;
                 }
+                renderizarJogadores(clubeId, container, podeRescindir);
             });
-        }
+            }
+
 
         container.appendChild(card);
     });
 }
 
-export function abrirModalEstatisticas(jogadorId) {
-    const partidas = loadFromLocalStorage('partidas');
-    const jogadores = loadFromLocalStorage('jogadores');
-    const jogador = jogadores.find(j => j.id === jogadorId);
+export async function abrirModalEstatisticas(jogadorId) {
+    const resposta = await fetch(`php/api/buscar_jogador.php?id=${jogadorId}`)
+    const jogador = await resposta.json();
 
-    // Coleta stats de todas as partidas
-    const stats = {
-        gols: 0,
-        assistencias: 0,
-        cartaoAmarelo: 0,
-        cartaoVermelho: 0,
-        substituicoes: 0,
-        partidas: 0
-    };
-
-    partidas.forEach(partida => {
-        const todos = [...partida.mandante.titulares, ...partida.mandante.reservas];
-        const encontrado = todos.find(j => j.id === jogadorId);
-        if (encontrado) {
-            stats.partidas++;
-            stats.gols += encontrado.gols || 0;
-            stats.assistencias += encontrado.assistencias || 0;
-            if (encontrado.cartaoAmarelo) stats.cartaoAmarelo++;
-            if (encontrado.cartaoVermelho) stats.cartaoVermelho++;
-            if (encontrado.substituicao) stats.substituicoes++;
-        }
-    });
+    const respostaStats = await fetch(`php/api/estatisticas_jogador.php?id=${jogadorId}`);
+    const stats = await respostaStats;     // lacuna: abrir a bandeja
 
     // Preenche o modal
     document.querySelector('#stats-nome').textContent = jogador.nome;
@@ -136,8 +120,8 @@ export function abrirModalEstatisticas(jogadorId) {
     document.querySelector('#stats-partidas').textContent = stats.partidas;
     document.querySelector('#stats-gols').textContent = stats.gols;
     document.querySelector('#stats-assistencias').textContent = stats.assistencias;
-    document.querySelector('#stats-amarelo').textContent = stats.cartaoAmarelo;
-    document.querySelector('#stats-vermelho').textContent = stats.cartaoVermelho;
+    document.querySelector('#stats-amarelo').textContent = stats.amarelos;
+    document.querySelector('#stats-vermelho').textContent = stats.vermelhos;
     document.querySelector('#stats-substituicoes').textContent = stats.substituicoes;
 
     document.querySelector('#overlay-modal-stats').classList.add('ativo');

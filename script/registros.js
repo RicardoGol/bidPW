@@ -1,5 +1,4 @@
-import { ClubesPorEstado } from "./dados.js";
-import { showToast, saveToLocalStorage, loadFromLocalStorage, renderizarJogadores } from "./utils.js";
+import { showToast, renderizarJogadores } from "./utils.js";
 import { abrirModalPartida } from './partidas.js';
 
 const estadoBusca = document.querySelector('#estado-busca');
@@ -12,14 +11,16 @@ const botaoConfirmar = document.querySelector('#botao-confirmar-registro')
 const botaoLogout = document.querySelector('#logout');
 const botaoAbrirModalPartida = document.querySelector('#botao-abrir-modal-partida');
 
-const JOGADORES_KEY = 'jogadores';
+// ao carregar: barra quem não está logado
+const sessao = await (await fetch('php/api/verificar_sessao.php')).json();
+if (!sessao.logado) {
+    window.location.href = './PaginaLogin.html';
+}
 
-
-botaoLogout.addEventListener('click', () =>{
-    localStorage.removeItem('autenticado');
-    sessionStorage.removeItem('autenticado');
-    window.location.href = './Index.html'
-})
+botaoLogout.addEventListener('click', async () => {
+    await fetch('php/api/logout.php');
+    window.location.href = './Index.html';
+});
 // ── CLUBES ──
 async function atualizarClubes() {
     const estadoSelecionado = estadoBusca.value;
@@ -98,46 +99,32 @@ async function registrarJogador() {
         });
     }
 
-    const estadoSelecionado = estadoBusca.value;
-    const clubeId = parseInt(clubeBusca.value);
-    const clube = ClubesPorEstado[estadoSelecionado].find(c => c.id === clubeId);
-
-    const jogadores = loadFromLocalStorage(JOGADORES_KEY);
-
-    const novoJogador = {
-        id: crypto.randomUUID(),
+const resposta = await fetch('php/api/registrar_jogador.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
         nome,
         apelido,
         nascimento,
-        foto: fotoBase64, // null se não tiver foto
-        contrato: {
-            numero: camisa,
-            tipo,
-            publicacao,
-            inicio,
-            inscricao: parseInt(inscricao)
-        },
-        clube,
-        ativo: true
-    };
-    let duplicado = false;
-    jogadores.forEach(jogador => {
-        if(jogador.nome === novoJogador.nome || jogador.contrato.numero === novoJogador.contrato.numero || jogador.contrato.inscricao === novoJogador.contrato.inscricao){
-            duplicado = true;
-        }
-        else{
-            duplicado = false;
-        }
-    });
-    console.log(duplicado + "    " + novoJogador)
-    if(duplicado){
-        showToast('Jogador com informações duplicadas!', 'error');
-        return;
-    }
-    jogadores.push(novoJogador);
-    saveToLocalStorage(JOGADORES_KEY, jogadores);
+        foto: fotoBase64,
+        camisa,
+        tipo,
+        publicacao,
+        inicio,
+        inscricao,
+        clube_id: parseInt(clubeBusca.value)         // lacuna: o número do clube escolhido
+    })
+});
+const resultado = await resposta.json();   // lacuna: abrir a bandeja
 
-    showToast(`${nome} registrado com sucesso!`, 'success');
+if (resultado.erro) {
+    showToast(resultado.erro, 'error');
+    return;
+}
+
+showToast(`${nome} registrado com sucesso!`, 'success');
+// o resto (fechar modal, limpar campos, renderizarJogadores) continua igual
+
     overlayModal.classList.remove('ativo');
     document.querySelector('#registrar-nome').value = '';
     document.querySelector('#registrar-apelido').value = '';
@@ -173,264 +160,12 @@ botaoBusca.addEventListener('click', () => {
     renderizarJogadores(clubeBusca.value, container, true);
 });
 
-const apresentacao_teste = document.getElementById('apresentacao-add')
-const botao_teste = document.createElement('button')
-botao_teste.textContent = 'Adicionar jogadores'
-botao_teste.classList.add('botao-voltar')
-apresentacao_teste.appendChild(botao_teste)
+document.querySelector('#botao-fechar-stats').addEventListener('click', () => {
+    document.querySelector('#overlay-modal-stats').classList.remove('ativo');
+});
 
-botao_teste.addEventListener('click', () =>{
-
-    const estadoSelecionado = estadoBusca.value;
-    const clubeId = parseInt(clubeBusca.value);
-    if (!estadoSelecionado || !ClubesPorEstado[estadoSelecionado]) {
-        showToast('Selecione um estado!', 'error');
-        return;
+document.querySelector('#overlay-modal-stats').addEventListener('click', (e) => {
+    if (e.target === document.querySelector('#overlay-modal-stats')) {
+        document.querySelector('#overlay-modal-stats').classList.remove('ativo');
     }
-
-    const clube = ClubesPorEstado[estadoSelecionado].find(c => c.id === clubeId);
-    if (!clube) {
-        showToast('Selecione um clube!', 'error');
-        return;
-    }
-
-    const jogadores = loadFromLocalStorage(JOGADORES_KEY);
-    
-    const novoJogador = [{
-        id: Date.now() -1,
-        nome: 'Vinicius Tavares Guimarães',
-        apelido: 'Guimarães',
-        nascimento: '1982-03-09',
-        contrato: {
-            numero: 10,
-            tipo: 'definitivo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(1)
-        },
-        clube,
-        ativo: true,
-    },
-        {
-        id: Date.now(),
-        nome: 'Sergio Yoshimitsu Fujii',
-        apelido: 'Fujii',
-        nascimento: '1982-06-28',
-        contrato: {
-            numero: 2,
-            tipo: 'definitivo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(2)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 1,
-        nome: 'Sophia Pradella Pereira',
-        apelido: 'Pradella',
-        nascimento: '2009-06-17',
-        contrato: {
-            numero: 67,
-            tipo: 'definitivo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(3)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 2,
-        nome: 'Lara Oliveira Menezes',
-        apelido: 'Lara',
-        nascimento: '2008-08-28',
-        contrato: {
-            numero: 25,
-            tipo: 'definitivo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(4)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 3,
-        nome: 'Marina da Silva Pereira',
-        apelido: 'Nina',
-        nascimento: '2009-10-26',
-        contrato: {
-            numero: 26,
-            tipo: 'definitivo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(5)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 4,
-        nome: 'Manuela Gonçalvaes Cairuga',
-        apelido: 'Gonçalves',
-        nascimento: '2009-08-14',
-        contrato: {
-            numero: 69,
-            tipo: 'definitivo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(6)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 5,
-        nome: 'Nicolas Vieira Madrid',
-        apelido: 'Madrid',
-        nascimento: '2006-12-13',
-        contrato: {
-            numero: 4,
-            tipo: 'definitivo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(7)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 8,
-        nome: 'Cristhofer Guilherme Rodrigues Madrid',
-        apelido: 'Nego Madrid',
-        nascimento: '2008-08-21',
-        contrato: {
-            numero: 5,
-            tipo: 'emprestimo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(50)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 6,
-        nome: 'Isabella Lima Lopes',
-        apelido: 'Isa Lopes',
-        nascimento: '2009-06-22',
-        contrato: {
-            numero: 22,
-            tipo: 'emprestimo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(8)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 7,
-        nome: 'Fillipe de Souza Machado',
-        apelido: 'Fillipe',
-        nascimento: '2010-03-30',
-        contrato: {
-            numero: 9,
-            tipo: 'emprestimo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(9)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 12,
-        nome: 'Altemir Silva da Silva',
-        apelido: 'Altamir',
-        nascimento: '2008-03-17',
-        contrato: {
-            numero: 6,
-            tipo: 'emprestimo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(12)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 13,
-        nome: 'Kamily Silva Naatz',
-        apelido: 'Kemily',
-        nascimento: '2009-03-17',
-        contrato: {
-            numero: 7,
-            tipo: 'emprestimo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(13)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 9,
-        nome: 'Lukas da Silva Nogueira',
-        apelido: 'Lukinhas',
-        nascimento: '2010-06-18',
-        contrato: {
-            numero: 0,
-            tipo: 'emprestimo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(10)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 10,
-        nome: 'Gustavo Kazanowski Netto',
-        apelido: 'Kazanowski',
-        nascimento: '2009-10-20',
-        contrato: {
-            numero: 11,
-            tipo: 'emprestimo',
-            publicacao: '2026-06-22',
-            inicio: '2026-06-26',
-            inscricao: parseInt(11)
-        },
-        clube,
-        ativo: true,
-    },
-    {
-        id: Date.now() + 11,
-        nome: 'AnaitaT',
-        apelido: 'Anaitat',
-        nascimento: '2000-01-01',
-        contrato: {
-            numero: 99,
-            tipo: 'rescisao',
-            publicacao: '2026-01-22',
-            inicio: '2026-01-26',
-            inscricao: parseInt(80)
-        },
-        clube,
-        ativo: true,
-    },];
-    novoJogador.forEach((jogador) =>{
-        jogadores.push(jogador);
-    })
-    saveToLocalStorage(JOGADORES_KEY, jogadores);
-    
-    showToast(`jogadores registrados com sucesso!`, 'success');
-    apresentacao_teste.remove();
-    const container = document.querySelector('#lista-jogadores');
-    container.style.display = 'grid';
-    renderizarJogadores(clubeBusca.value, container, true);
-})
-
-// [{"id":1782173424520,"nome":"asa","apelido":"sa","nascimento":"2026-06-24","contrato":{"numero":"21","tipo":"emprestimo","publicacao":"2026-06-11","inicio":"2026-06-05","inscricao":2121},"clube":{"id":2,"name":"Coritiba","division":"A"},"ativo":true}]
+});

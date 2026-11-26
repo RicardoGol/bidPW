@@ -1,8 +1,8 @@
-import { ClubesPorEstado } from "./dados.js";
-import { showToast, saveToLocalStorage, loadFromLocalStorage } from "./utils.js";
 
-const JOGADORES_KEY = 'jogadores';
-const PARTIDAS_KEY = 'partidas';
+import { showToast} from "./utils.js";
+
+
+let jogadoresDoClube = [];   // a "mesa": preenchida quando o modal abre
 
 // ── ELEMENTOS ──
 const overlayModalPartida = document.querySelector('#overlay-modal-partida');
@@ -13,7 +13,6 @@ const botaoConfirmarPartida = document.querySelector('#botao-confirmar-partida')
 const etapa1 = document.querySelector('#etapa-1');
 const etapa2 = document.querySelector('#etapa-2');
 
-const estadoBusca = document.querySelector('#estado-busca');
 const clubeBusca = document.querySelector('#clube-busca');
 
 const partidaEstadoVisitante = document.querySelector('#partida-estado-visitante');
@@ -58,15 +57,15 @@ partidaEstadoVisitante.addEventListener('change', async () => {
 });
 
 // ── CARREGAR JOGADORES ──
-function carregarJogadoresParaSelecao(clubeId) {
-    const jogadores = loadFromLocalStorage(JOGADORES_KEY);
-    const ativos = jogadores.filter(j =>
-        j.clube.id === parseInt(clubeId) &&
-        j.ativo &&
-        j.contrato.tipo.toLowerCase() !== 'rescisao'
-    );
+async function carregarJogadoresParaSelecao(clubeId) {
+    const resposta = await fetch(`php/api/listar_jogadores.php?clube_id=${clubeId}`);
+    const todos = await resposta.json();
+
+    jogadoresDoClube = todos.filter(j => j.contrato.tipo.toLowerCase() !== 'rescisao');
+    const ativos = jogadoresDoClube;
 
     listaSelecaoTitulares.innerHTML = '';
+    // ... o resto da função fica IGUAL
     listaSelecaoReservas.innerHTML = '';
 
     if (ativos.length < 11) {
@@ -178,7 +177,6 @@ botaoEtapaAnterior.addEventListener('click', () => {
 
 function renderizarStatsJogadores() {
     listaStatsJogadores.innerHTML = '';
-    const jogadores = loadFromLocalStorage(JOGADORES_KEY);
 
     const titularIds = [...document.querySelectorAll('.check-titular:checked')].map(c => parseInt(c.dataset.id));
     const reservaIds = [...document.querySelectorAll('.check-reserva:checked')].map(c => parseInt(c.dataset.id));
@@ -190,7 +188,7 @@ function renderizarStatsJogadores() {
         listaStatsJogadores.appendChild(header);
 
         ids.forEach(id => {
-            const jogador = jogadores.find(j => j.id === id);
+        const jogador = jogadoresDoClube.find(j => j.id === id);
             if (!jogador) return;
 
             const item = document.createElement('div');
@@ -229,55 +227,44 @@ function renderizarStatsJogadores() {
 }
 
 // ── CONFIRMAR PARTIDA ──
-botaoConfirmarPartida.addEventListener('click', () => {
-    const data = document.querySelector('#partida-data').value;
-    const visitanteId = parseInt(partidaClubeVisitante.value);
-    const visitanteEstado = partidaEstadoVisitante.value;
-    const clubeVisitante = ClubesPorEstado[visitanteEstado]?.find(c => c.id === visitanteId);
-
-    const mandanteId = parseInt(clubeBusca.value);
-    const mandanteEstado = estadoBusca.value;
-    const clubeMandante = ClubesPorEstado[mandanteEstado]?.find(c => c.id === mandanteId);
-
-    const jogadores = loadFromLocalStorage(JOGADORES_KEY);
+botaoConfirmarPartida.addEventListener('click', async () => {
     const titularIds = [...document.querySelectorAll('.check-titular:checked')].map(c => parseInt(c.dataset.id));
     const reservaIds = [...document.querySelectorAll('.check-reserva:checked')].map(c => parseInt(c.dataset.id));
 
-    const coletarStats = (ids) => ids.map(id => {
-        const jogador = jogadores.find(j => j.id === id);
+    const coletarStats = (ids, titular) => ids.map(id => {
         const item = listaStatsJogadores.querySelector(`.item-stats[data-id="${id}"]`);
         return {
-            id: jogador.id,
-            nome: jogador.nome,
-            apelido: jogador.apelido,
+            id,
+            titular,
             gols: parseInt(item.querySelector('.stat-gols').value) || 0,
             assistencias: parseInt(item.querySelector('.stat-assistencias').value) || 0,
             cartaoAmarelo: item.querySelector('.stat-amarelo').checked,
-            cartaoVermelho: item.querySelector('.stat-vermelho').checked,
+            cartaoVermelho: item.querySelector('.stat-vermelho').checked,        // lacuna 1: igual ao amarelo, com a classe do vermelho
             substituicao: item.querySelector('.stat-substituicao').value || null
         };
     });
 
-    const novaPartida = {
-        id: Date.now(),
-        data,
-        mandante: {
-            clube: clubeMandante,
-            titulares: coletarStats(titularIds),
-            reservas: coletarStats(reservaIds)
-        },
-        visitante: {
-            clube: clubeVisitante
-        }
-    };
+    const resposta = await fetch('php/api/registrar_partida.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            data: document.querySelector('#partida-data').value,
+            mandante_id: parseInt(clubeBusca.value),
+            visitante_id: Number(partidaClubeVisitante.value),          // lacuna 2: o id do clube visitante (number)
+            jogadores: [...coletarStats(titularIds, true), ...coletarStats(reservaIds, false)]
+        })
+    });
+    const resultado = await resposta.json();        // lacuna 3: abrir a bandeja
 
-    const partidas = loadFromLocalStorage(PARTIDAS_KEY);
-    partidas.push(novaPartida);
-    saveToLocalStorage(PARTIDAS_KEY, partidas);
+    if (resultado.erro) {
+        showToast(resultado.erro, 'error');
+        return;
+    }
 
     showToast('Partida registrada com sucesso!', 'success');
     fecharModalPartida();
 });
+
 
 // ── LIMPAR MODAL ──
 function limparModal() {
